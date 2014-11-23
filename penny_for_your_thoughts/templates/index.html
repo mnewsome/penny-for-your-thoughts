@@ -1,0 +1,11 @@
+<p>{{ locked_thought_count }} thoughts are  waiting to be unlocked. </p>
+<p>Preview of next thought: </p>
+<p>{{ next_locked_thought.text|truncatechars:30 }} </p>
+
+<p>Enter a thought: </p>
+
+<form method=post action="" >
+  {% csrf_token %}
+  {{ thought_form  }}
+  <input type="submit" value="submit">
+</form>
