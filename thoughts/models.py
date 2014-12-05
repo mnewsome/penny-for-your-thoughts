@@ -1,10 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Thought(models.Model):
   text = models.TextField()
   date_created = models.DateTimeField(auto_now_add=True)
   date_updated = models.DateTimeField(auto_now=True)
   is_locked = models.BooleanField(default=True)
+  user = models.ForeignKey(User)
 
   def __unicode__(self):
     return self.text

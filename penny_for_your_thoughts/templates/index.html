@@ -6,6 +6,7 @@
 
 <form method=post action="" >
   {% csrf_token %}
-  {{ thought_form  }}
+  {{ thought_form.text }}
+  {{ thought_form.user.as_hidden }}
   <input type="submit" value="submit">
 </form>

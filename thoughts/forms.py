@@ -4,4 +4,4 @@ from thoughts.models import Thought
 class ThoughtForm(ModelForm):
   class Meta:
     model = Thought
-    fields = ['text']
+    fields = ['text', 'user']

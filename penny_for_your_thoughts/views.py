@@ -22,6 +22,6 @@ def get_thought_form(request):
     if thought_form.is_valid():
       thought_form.save()
   else:
-    thought_form = ThoughtForm()
+    thought_form = ThoughtForm(initial={'user': request.user})
 
   return thought_form

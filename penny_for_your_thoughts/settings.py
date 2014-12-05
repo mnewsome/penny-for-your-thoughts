@@ -4,7 +4,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SECRET_KEY = env.get('SECRET_KEY')
 
-DEBUG = True if env.get('DEBUG', True) == True else False
+#DEBUG = True if env.get('DEBUG', True) == True else False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
