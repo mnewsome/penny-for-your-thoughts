@@ -5,11 +5,13 @@ from thoughts.forms import ThoughtForm
 
 def index(request):
   locked_thought_count = Thought.locked_thought_count()
+  unlocked_thought_count = Thought.unlocked_thought_count()
   next_locked_thought = Thought.next_locked_thought()
   thought_form = get_thought_form(request)
 
   context = dict(
            locked_thought_count=locked_thought_count,
+           unlocked_thought_count=unlocked_thought_count,
            next_locked_thought=next_locked_thought,
            thought_form=thought_form,
            )
