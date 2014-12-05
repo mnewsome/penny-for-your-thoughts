@@ -4,7 +4,7 @@
 
 <p>Enter a thought: </p>
 
-<form method=post action="" >
+<form method=post action="{% url 'penny_for_your_thoughts.views.index' %}" >
   {% csrf_token %}
   {{ thought_form.text }}
   {{ thought_form.user.as_hidden }}
