@@ -17,5 +17,9 @@ class Thought(models.Model):
     return Thought.objects.filter(is_locked=True).count()
 
   @classmethod
+  def unlocked_thought_count(cls):
+    return Thought.objects.filter(is_locked=False).count()
+
+  @classmethod
   def next_locked_thought(cls):
     return Thought.objects.filter(is_locked=True).order_by('date_created').first()
