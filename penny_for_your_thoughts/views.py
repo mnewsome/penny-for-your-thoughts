@@ -2,7 +2,6 @@ from django.shortcuts import render
 
 from thoughts.forms import ThoughtForm
 from thoughts.models import Thought
-from thoughts.tasks import add
 
 def index(request):
   context = dict(
