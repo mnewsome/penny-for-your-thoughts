@@ -8,7 +8,7 @@ from django.conf import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'penny_for_your_thoughts.settings')
 
-app = Celery('penny_for_your_thoughts', backend='amqp', broker='amqp://' )
+app = Celery('penny_for_your_thoughts')
 
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

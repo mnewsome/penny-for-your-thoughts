@@ -47,6 +47,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Celery settings
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
 import dj_database_url
 DATABASES = {'default': dj_database_url.config()}
 
