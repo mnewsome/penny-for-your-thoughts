@@ -23,3 +23,7 @@ class Thought(models.Model):
   @classmethod
   def next_locked_thought(cls):
     return Thought.objects.filter(is_locked=True).order_by('date_created').first()
+
+  @classmethod
+  def ready_to_unlock(cls, pool_size):
+    return True if pool_size > 0 else False
