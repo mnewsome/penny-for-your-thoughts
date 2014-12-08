@@ -27,3 +27,10 @@ class Thought(models.Model):
   @classmethod
   def ready_to_unlock(cls, pool_size):
     return True if pool_size > 0 else False
+
+  def save(self, pool_size=0, *args, **kwargs):
+    if Thought.ready_to_unlock(pool_size):
+      self.is_locked = False
+      super(Thought, self).save(*args, **kwargs)
+    else:
+      super(Thought, self).save(*args, **kwargs)

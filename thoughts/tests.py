@@ -6,11 +6,11 @@ from penny_for_your_thoughts import views
 
 class ThoughtTestCase(TestCase):
   def setUp(self):
-    test_user = User.objects.create_user('malcolm', 'malcolm@something.com', 'password')
+    self.test_user = User.objects.create_user('malcolm', 'malcolm@something.com', 'password')
 
-    Thought.objects.create(text="Thought 1", user=test_user)
-    Thought.objects.create(text="Thought 2", user=test_user)
-    Thought.objects.create(text="Thought 3", user=test_user, is_locked=False)
+    Thought.objects.create(text="Thought 1", user=self.test_user)
+    Thought.objects.create(text="Thought 2", user=self.test_user)
+    Thought.objects.create(text="Thought 3", user=self.test_user, is_locked=False)
 
   def test_get_locked_thought_count(self):
     count = Thought.locked_thought_count()
@@ -31,3 +31,9 @@ class ThoughtTestCase(TestCase):
   def test_not_ready_to_unlock(self):
     unlocked_pool_size = 0
     self.assertFalse(Thought.ready_to_unlock(unlocked_pool_size))
+
+  def test_thought_is_unlocked_if_there_was_room_in_the_pool(self):
+    unlocked_pool_size = 10
+    thought = Thought.objects.create(text="thought created when pool is greater than 0", user=self.test_user)
+    thought.save(unlocked_pool_size)
+    self.assertFalse(thought.is_locked)
