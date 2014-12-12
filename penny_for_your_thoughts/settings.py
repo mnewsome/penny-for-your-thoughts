@@ -16,6 +16,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'thoughts',
 )
 
@@ -46,6 +47,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+SHELL_PLUS = 'ipython'
 
 # Celery settings
 BROKER_URL = 'redis://localhost:6379/0'
