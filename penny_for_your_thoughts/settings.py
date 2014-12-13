@@ -51,8 +51,8 @@ USE_TZ = True
 SHELL_PLUS = 'ipython'
 
 # Celery settings
-BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
 
 import dj_database_url
 DATABASES = {'default': dj_database_url.config()}

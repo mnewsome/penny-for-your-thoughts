@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 from thoughts.models import Thought
 from penny_for_your_thoughts import views
+import tasks
 
 class ThoughtTestCase(TestCase):
   def setUp(self):
@@ -32,8 +33,18 @@ class ThoughtTestCase(TestCase):
     unlocked_pool_size = 0
     self.assertFalse(Thought.ready_to_unlock(unlocked_pool_size))
 
-  def test_thought_is_unlocked_if_there_was_room_in_the_pool(self):
+  def test_thought_is_unlocked_by_default_if_there_was_room_in_the_pool(self):
     unlocked_pool_size = 10
     thought = Thought.objects.create(text="thought created when pool is greater than 0", user=self.test_user)
     thought.save(unlocked_pool_size)
     self.assertFalse(thought.is_locked)
+
+  def test_thought_worker_unlocks_all_available_thoughts(self):
+    unlocked_pool_size = 10
+    tasks.unlock_thoughts(unlocked_pool_size)
+    self.assertEqual(Thought.unlocked_thought_count(), 3)
+
+  def test_thought_worker_unlocks_thoughts_based_on_pool_size(self):
+    unlocked_pool_size = 1
+    tasks.unlock_thoughts(unlocked_pool_size)
+    self.assertEqual(Thought.unlocked_thought_count(), 2)
