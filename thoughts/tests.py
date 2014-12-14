@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 from thoughts.models import Thought
 from penny_for_your_thoughts import views
-import tasks
 
 class ThoughtTestCase(TestCase):
   def setUp(self):
@@ -41,10 +40,10 @@ class ThoughtTestCase(TestCase):
 
   def test_thought_worker_unlocks_all_available_thoughts(self):
     unlocked_pool_size = 10
-    tasks.unlock_thoughts(unlocked_pool_size)
+    Thought.unlock_thoughts(unlocked_pool_size)
     self.assertEqual(Thought.unlocked_thought_count(), 3)
 
   def test_thought_worker_unlocks_thoughts_based_on_pool_size(self):
     unlocked_pool_size = 1
-    tasks.unlock_thoughts(unlocked_pool_size)
+    Thought.unlock_thoughts(unlocked_pool_size)
     self.assertEqual(Thought.unlocked_thought_count(), 2)
