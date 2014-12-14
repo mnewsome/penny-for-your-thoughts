@@ -1,3 +1,5 @@
+{% load thought_tags %}
+
 <p>{{ locked_thought_count }} thoughts are  waiting to be unlocked. </p>
 <p>{{ unlocked_thought_count }} thoughts have been unlocked. </p>
 
@@ -12,3 +14,5 @@
   {{ thought_form.user.as_hidden }}
   <input type="submit" value="submit">
 </form>
+
+{% show_thoughts %}
