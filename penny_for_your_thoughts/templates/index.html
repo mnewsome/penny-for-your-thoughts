@@ -17,3 +17,19 @@
 
 <h3>Unlocked Thoughts</h3>
 {% show_unlocked_thoughts %}
+
+<body>
+  <form action="{% url 'penny_for_your_thoughts.views.charge' %}" method="post">
+  {% csrf_token %}
+    <article>
+    <label>
+      <span>Amount is $5.00</span>
+    </label>
+    </article>
+
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="{{ key }}"
+      data-description="A Flask Charge"
+      data-amount="500"></script>
+  </form>
+</body>
