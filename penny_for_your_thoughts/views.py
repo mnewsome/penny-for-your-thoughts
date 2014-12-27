@@ -41,8 +41,7 @@ def charge(request):
         description='Donation'
         )
 
-    new_payment = Payment(user=request.user, stripe_customer_id=customer.id, amount=amount)
-    new_payment.save()
+    Payment(user=request.user, stripe_customer_id=customer.id, amount=amount).save()
 
   return redirect('penny_for_your_thoughts.views.index')
 
