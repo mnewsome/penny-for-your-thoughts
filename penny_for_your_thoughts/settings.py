@@ -20,6 +20,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'thoughts',
+    'payments',
 )
 
 MIDDLEWARE_CLASSES = (

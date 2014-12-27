@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from penny_for_your_thoughts import settings
 from thoughts.forms import ThoughtForm
 from thoughts.models import Thought
+from payments.models import Payment
 
 import stripe
 
@@ -29,16 +30,19 @@ def charge(request):
     amount = 500
 
     customer = stripe.Customer.create(
-        email='customer@example.com',
-        card=request.POST['stripeToken']
+        email=request.POST['stripeEmail'],
+        card=request.POST['stripeToken'],
         )
 
     charge = stripe.Charge.create(
         customer=customer.id,
         amount=amount,
         currency='usd',
-        description='Flask Charge'
+        description='Donation'
         )
+
+    new_payment = Payment(user=request.user, stripe_customer_id=customer.id, amount=amount)
+    new_payment.save()
 
   return redirect('penny_for_your_thoughts.views.index')
 
