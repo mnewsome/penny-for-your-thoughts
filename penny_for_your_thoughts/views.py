@@ -1,14 +1,14 @@
-from os import environ as env
 from django.shortcuts import render, redirect
 
+from penny_for_your_thoughts import settings
 from thoughts.forms import ThoughtForm
 from thoughts.models import Thought
 
 import stripe
 
 stripe_keys = dict(
-    secret_key=env.get('STRIPE_TEST_SECRET_KEY'),
-    publishable_key=env.get('STRIPE_TEST_PUB_KEY')
+    secret_key=settings.STRIPE_SECRET_KEY,
+    publishable_key=settings.STRIPE_PUBLISHABLE_KEY
     )
 
 stripe.api_key = stripe_keys['secret_key']
