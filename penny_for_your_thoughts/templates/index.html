@@ -23,13 +23,13 @@
   {% csrf_token %}
     <article>
     <label>
-      <span>Amount is $5.00</span>
+      <span>Donate to unlock thoughts</span>
     </label>
     </article>
 
     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
       data-key="{{ key }}"
-      data-description="A Flask Charge"
+      data-description="Donation"
       data-amount="500"></script>
   </form>
 </body>
