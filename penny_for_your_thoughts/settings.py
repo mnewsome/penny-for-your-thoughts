@@ -43,7 +43,7 @@ WSGI_APPLICATION = 'penny_for_your_thoughts.wsgi.application'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 
