@@ -7,6 +7,7 @@ class ThoughtAdmin(admin.ModelAdmin):
       ('Status', {'fields': ['is_locked']}),
   ]
 
+  list_display = ('__unicode__', 'user', 'date_created','is_locked')
   list_filter = ('date_created', 'user', 'is_locked')
 
 admin.site.register(Thought, ThoughtAdmin)
