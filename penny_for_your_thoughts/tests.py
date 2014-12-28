@@ -18,3 +18,7 @@ class ViewsTest(TestCase):
 
   def test_index_view_template(self):
     self.assertTemplateUsed('index.html')
+
+  def test_charge_view_response(self):
+    charge_response = self.client.get(reverse('penny_for_your_thoughts.views.charge'))
+    self.assertEqual(charge_response.status_code, 302)
