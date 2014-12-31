@@ -4,8 +4,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SECRET_KEY = env.get('SECRET_KEY')
 
-#DEBUG = True if env.get('DEBUG', True) == True else False
-DEBUG = True
+DEBUG = True if env.get('DEBUG') == 'True' else False
+
+STRIPE_SECRET_KEY = env.get('STRIPE_TEST_SECRET_KEY') if DEBUG == True else env.get('STRIPE_LIVE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = env.get('STRIPE_TEST_PUBLISHABLE_KEY') if DEBUG == True else env.get('STRIPE_LIVE_PUBLISHABLE_KEY')
 
 TEMPLATE_DEBUG = True
 
@@ -18,6 +20,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'thoughts',
+    'payments',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -40,7 +43,7 @@ WSGI_APPLICATION = 'penny_for_your_thoughts.wsgi.application'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 
