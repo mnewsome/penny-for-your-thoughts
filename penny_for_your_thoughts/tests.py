@@ -1,5 +1,20 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, RequestFactory
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+
+from lib.payment_manager import PaymentManager
+from payments.models import Payment
+import penny_for_your_thoughts.views as view
+
+class PaymentManagerSpy(PaymentManager):
+  def create_customer(self, email, card):
+    return MockCustomer()
+
+  def create_charge(self, customer, card):
+    return None
+
+class MockCustomer:
+    id = "cust_id"
 
 class ViewsTest(TestCase):
   def setUp(self):
@@ -20,5 +35,18 @@ class ViewsTest(TestCase):
     self.assertTemplateUsed('index.html')
 
   def test_charge_view_response(self):
-    charge_response = self.client.get(reverse('penny_for_your_thoughts.views.charge'))
-    self.assertEqual(charge_response.status_code, 302)
+    response = self.client.get(reverse('penny_for_your_thoughts.views.charge'))
+    self.assertEqual(response.status_code, 302)
+
+  def test_charget_view_saves_payment(self):
+    factory = RequestFactory()
+    view.get_payment_manager = PaymentManagerSpy
+
+    request = factory.post(reverse('penny_for_your_thoughts.views.charge'),
+                                  {'stripeEmail': 'some@email.com', 'stripeToken':'someToken'})
+    user = User.objects.create_user(username='malcolm', email='malcolm@newsome.com', password='password')
+    request.user = user
+
+    view.charge(request)
+
+    self.assertEqual(1, Payment.objects.count())

@@ -1,18 +1,9 @@
 from django.shortcuts import render, redirect
 
-from penny_for_your_thoughts import settings
+from lib.payment_manager import stripe_keys, PaymentManager
 from thoughts.forms import ThoughtForm
 from thoughts.models import Thought
 from payments.models import Payment
-
-import stripe
-
-stripe_keys = dict(
-    secret_key=settings.STRIPE_SECRET_KEY,
-    publishable_key=settings.STRIPE_PUBLISHABLE_KEY
-    )
-
-stripe.api_key = stripe_keys['secret_key']
 
 def index(request):
   context = dict(
@@ -29,21 +20,17 @@ def charge(request):
   if request.method == 'POST':
     amount = 500
 
-    customer = stripe.Customer.create(
-        email=request.POST['stripeEmail'],
-        card=request.POST['stripeToken'],
-        )
-
-    charge = stripe.Charge.create(
-        customer=customer.id,
-        amount=amount,
-        currency='usd',
-        description='Donation'
-        )
+    payment_manager = get_payment_manager()
+    customer = payment_manager.create_customer(request.POST['stripeEmail'],
+                                               request.POST['stripeToken'])
+    payment_manager.create_charge(customer, amount)
 
     Payment(user=request.user, stripe_customer_id=customer.id, amount=amount).save()
 
   return redirect('penny_for_your_thoughts.views.index')
+
+def get_payment_manager():
+  return PaymentManager()
 
 def get_thought_form(request):
   if request.method == 'POST':
