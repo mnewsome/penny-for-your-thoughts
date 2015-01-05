@@ -1,9 +1,10 @@
-import redis
-from os import environ as env
+from penny_for_your_thoughts import settings
 
-datastore = redis.StrictRedis(host=env.get('REDIS_DEV_HOST'),
-                              port=env.get('REDIS_DEV_PORT'),
-                              db=env.get('REDIS_DEV_DB'))
+import redis
+
+datastore = redis.StrictRedis(host=settings.REDIS_HOST,
+                              port=settings.REDIS_PORT,
+                              db=settings.REDIS_DB)
 
 UNLOCKED_THOUGHT_POOL = 'unlocked_thought_pool'
 

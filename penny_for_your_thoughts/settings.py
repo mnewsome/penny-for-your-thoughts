@@ -9,6 +9,10 @@ DEBUG = True if env.get('DEBUG') == 'True' else False
 STRIPE_SECRET_KEY = env.get('STRIPE_TEST_SECRET_KEY') if DEBUG == True else env.get('STRIPE_LIVE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = env.get('STRIPE_TEST_PUBLISHABLE_KEY') if DEBUG == True else env.get('STRIPE_LIVE_PUBLISHABLE_KEY')
 
+REDIS_HOST = env.get('REDIS_DEV_HOST') if DEBUG == True else env.get('REDIS_PROD_HOST')
+REDIS_PORT = env.get('REDIS_DEV_PORT') if DEBUG == True else env.get('REDIS_PROD_PORT')
+REDIS_DB   = env.get('REDIS_DEV_DB') if DEBUG == True else env.get('REDIS_PROD_DB')
+
 TEMPLATE_DEBUG = True
 
 INSTALLED_APPS = (
