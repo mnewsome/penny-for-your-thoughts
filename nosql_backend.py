@@ -1,7 +1,9 @@
 import redis
 from os import environ as env
 
-datastore = redis.StrictRedis(host=env.get('REDIS_DEV_HOST'), port=env.get('REDIS_DEV_PORT'), db=env.get('REDIS_DEV_DB'))
+datastore = redis.StrictRedis(host=env.get('REDIS_DEV_HOST'),
+                              port=env.get('REDIS_DEV_PORT'),
+                              db=env.get('REDIS_DEV_DB'))
 
 UNLOCKED_THOUGHT_POOL = 'unlocked_thought_pool'
 
