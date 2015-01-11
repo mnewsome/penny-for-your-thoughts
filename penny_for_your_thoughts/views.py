@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
 
 from lib.payment_manager import stripe_keys, PaymentManager
 from thoughts.forms import ThoughtForm
@@ -16,6 +17,7 @@ def index(request):
 
   return render(request, 'index.html', context)
 
+@require_POST
 def charge(request):
   if request.method == 'POST':
     amount = 500
@@ -26,8 +28,12 @@ def charge(request):
     payment_manager.create_charge(customer, amount)
 
     Payment(user=request.user, stripe_customer_id=customer.id, amount=amount).save()
+    Thought.unlock_thoughts(amount)
 
   return redirect('penny_for_your_thoughts.views.index')
+
+def unlock_thoughts():
+  Thought.unlock_thoughts()
 
 def get_payment_manager():
   return PaymentManager()

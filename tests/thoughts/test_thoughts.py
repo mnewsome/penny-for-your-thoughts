@@ -1,16 +1,15 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
+from tests.thoughts.helpers import *
 from thoughts.models import Thought
 from penny_for_your_thoughts import views
 
 class ThoughtTestCase(TestCase):
   def setUp(self):
     self.test_user = User.objects.create_user('malcolm', 'malcolm@something.com', 'password')
-
-    Thought.objects.create(text="Thought 1", user=self.test_user)
-    Thought.objects.create(text="Thought 2", user=self.test_user)
-    Thought.objects.create(text="Thought 3", user=self.test_user, is_locked=False)
+    create_locked_thoughts(2, self.test_user)
+    create_unlocked_thoughts(1, self.test_user)
 
   def test_get_locked_thought_count(self):
     count = Thought.locked_thought_count()
