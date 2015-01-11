@@ -8,6 +8,9 @@ from thoughts.models import Thought
 from payments.models import Payment
 import penny_for_your_thoughts.views as view
 
+INDEX_VIEW = 'penny_for_your_thoughts.views.index'
+CHARGE_VIEW = 'penny_for_your_thoughts.views.charge'
+
 class PaymentManagerSpy(PaymentManager):
   def create_customer(self, email, card):
     return MockCustomer()
@@ -21,14 +24,14 @@ class MockCustomer:
 def create_post_request():
     factory = RequestFactory()
     view.get_payment_manager = PaymentManagerSpy
-    return factory.post(reverse('penny_for_your_thoughts.views.charge'),
+    return factory.post(reverse(CHARGE_VIEW),
                                {'stripeEmail': 'some@email.com', 'stripeToken':'someToken'})
 
 class ViewsTest(TestCase):
   def setUp(self):
     self.client = Client()
 
-    self.index_response = self.client.get(reverse('penny_for_your_thoughts.views.index'))
+    self.index_response = self.client.get(reverse(INDEX_VIEW))
     self.test_user = User.objects.create_user(username='malcolm', email='malcolm@newsome.com', password='password')
     create_locked_thoughts(10, self.test_user)
 
@@ -49,7 +52,7 @@ class ViewsTest(TestCase):
     self.assertTemplateUsed('index.html')
 
   def test_charge_view_response(self):
-    response = self.client.get(reverse('penny_for_your_thoughts.views.charge'))
+    response = self.client.get(reverse(CHARGE_VIEW))
     self.assertEqual(response.status_code, 405)
 
   def test_charget_view_saves_payment(self):
