@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from lib.payment_manager import PaymentManager
+from nosql_backend import RedisWrapper
 from tests.thoughts.helpers import *
 from thoughts.models import Thought
 from payments.models import Payment
@@ -38,6 +39,12 @@ class ViewsTest(TestCase):
     self.post_request = create_post_request()
     self.post_request.user = self.test_user
 
+    self.redis_store = RedisWrapper(db=1)
+    view.redis_store = self.redis_store
+
+  def tearDown(self):
+    self.redis_store.reset_unlocked_thought_pool()
+
   def test_index_view_response(self):
     self.assertEqual(self.index_response.status_code, 200)
 
@@ -55,10 +62,14 @@ class ViewsTest(TestCase):
     response = self.client.get(reverse(CHARGE_VIEW))
     self.assertEqual(response.status_code, 405)
 
-  def test_charget_view_saves_payment(self):
+  def test_charge_view_saves_payment(self):
     view.charge(self.post_request)
     self.assertEqual(1, Payment.objects.count())
 
   def test_charge_view_unlocks_thoughts(self):
     view.charge(self.post_request)
     self.assertEqual(10, Thought.unlocked_thought_count())
+
+  def test_charge_view_increments_thought_pool(self):
+    view.charge(self.post_request)
+    self.assertEqual(490, self.redis_store.unlocked_thought_pool_value())

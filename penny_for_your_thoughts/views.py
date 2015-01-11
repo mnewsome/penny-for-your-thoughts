@@ -2,9 +2,13 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 
 from lib.payment_manager import stripe_keys, PaymentManager
+from nosql_backend import RedisWrapper
 from thoughts.forms import ThoughtForm
 from thoughts.models import Thought
 from payments.models import Payment
+
+
+redis_store = RedisWrapper()
 
 def index(request):
   context = dict(
@@ -28,7 +32,8 @@ def charge(request):
     payment_manager.create_charge(customer, amount)
 
     Payment(user=request.user, stripe_customer_id=customer.id, amount=amount).save()
-    Thought.unlock_thoughts(amount)
+    updated_thought_count = Thought.unlock_thoughts(amount)
+    adjust_thought_pool(updated_thought_count, amount)
 
   return redirect('penny_for_your_thoughts.views.index')
 
@@ -37,6 +42,10 @@ def unlock_thoughts():
 
 def get_payment_manager():
   return PaymentManager()
+
+def adjust_thought_pool(thoughts_updated_count, payment_amount):
+  if updated_thought_count < payment_amount:
+    return redis_store.increment_unlocked_thought_pool(payment_amount - thoughts_updated_count)
 
 def get_thought_form(request):
   if request.method == 'POST':
