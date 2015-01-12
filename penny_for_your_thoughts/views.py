@@ -11,11 +11,20 @@ from payments.models import Payment
 redis_store = RedisWrapper()
 
 def index(request):
+  if request.method == 'GET':
+    thought_form = ThoughtForm(initial={'user': request.user})
+
+  if request.method == 'POST':
+    thought_form = ThoughtForm(request.POST)
+    if thought_form.is_valid():
+      thought_form.save()
+      redis_store.decrement_unlocked_thought_pool(1)
+
   context = dict(
            locked_thought_count=Thought.locked_thought_count(),
            unlocked_thought_count=Thought.unlocked_thought_count(),
            next_locked_thought=Thought.next_locked_thought(),
-           thought_form=get_thought_form(request),
+           thought_form=thought_form,
            key=stripe_keys['publishable_key'],
            )
 
@@ -44,15 +53,5 @@ def get_payment_manager():
   return PaymentManager()
 
 def adjust_thought_pool(thoughts_updated_count, payment_amount):
-  if updated_thought_count < payment_amount:
+  if thoughts_updated_count < payment_amount:
     return redis_store.increment_unlocked_thought_pool(payment_amount - thoughts_updated_count)
-
-def get_thought_form(request):
-  if request.method == 'POST':
-    thought_form = ThoughtForm(request.POST)
-    if thought_form.is_valid():
-      thought_form.save()
-  else:
-    thought_form = ThoughtForm(initial={'user': request.user})
-
-  return thought_form
