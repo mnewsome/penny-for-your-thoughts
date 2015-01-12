@@ -28,6 +28,7 @@ def index(request):
            key=stripe_keys['publishable_key'],
            )
 
+  Thought.unlock_thoughts(redis_store.unlocked_thought_pool_value())
   return render(request, 'index.html', context)
 
 @require_POST

@@ -70,6 +70,11 @@ class ViewsTest(TestCase):
     view.index(self.index_post_request)
     self.assertEqual(9, self.redis_store.unlocked_thought_pool_value())
 
+  def test_index_view_unlocks_thoughts_when_there_is_room_in_the_pool(self):
+    self.redis_store.increment_unlocked_thought_pool(15)
+    view.index(self.index_post_request)
+    self.assertEqual(0, Thought.locked_thought_count())
+
   def test_charge_view_response(self):
     response = self.client.get(reverse(CHARGE_VIEW))
     self.assertEqual(response.status_code, 405)

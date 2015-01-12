@@ -24,9 +24,11 @@ class Thought(models.Model):
     return Thought.objects.filter(is_locked=True).order_by('date_created').first()
 
   @classmethod
-  def unlock_thoughts(cls, pool_size):
-    thought_keys = Thought.objects.filter(is_locked=True).order_by('date_created').values('pk')[:pool_size]
-    return Thought.objects.filter(pk__in=thought_keys).update(is_locked=False)
+  def unlock_thoughts(cls, unlocked_pool_size):
+    if Thought.locked_thought_count() > 0:
+      thought_keys = Thought.objects.filter(is_locked=True).order_by('date_created').values('pk')[:unlocked_pool_size]
+      return Thought.objects.filter(pk__in=thought_keys).update(is_locked=False)
+    return None
 
   @classmethod
   def ready_to_unlock(cls, pool_size):
