@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from lib.payment_manager import PaymentManager
 from nosql_backend import RedisWrapper
-from tests.thoughts.helpers import *
+from tests.thoughts.thought_helpers import *
 from thoughts.models import Thought
 from payments.models import Payment
 import penny_for_your_thoughts.views as view

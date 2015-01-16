@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from tests.thoughts.helpers import *
+from tests.thoughts.thought_helpers import *
 from thoughts.models import Thought
 from penny_for_your_thoughts import views
 

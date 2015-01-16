@@ -10,3 +10,7 @@ class Payment(models.Model):
 
   def __unicode__(self):
     return 'Payment from {0}'.format(str(self.user))
+
+  @classmethod
+  def total_amount_donated(cls):
+    return Payment.objects.aggregate(models.Sum('amount'))['amount__sum']
