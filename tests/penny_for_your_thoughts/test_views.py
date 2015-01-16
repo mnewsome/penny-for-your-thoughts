@@ -1,9 +1,9 @@
 from django.test import TestCase, Client, RequestFactory
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 
 from lib.payment_manager import PaymentManager
 from nosql_backend import RedisWrapper
+from tests.test_helpers import create_user
 from tests.thoughts.thought_helpers import *
 from thoughts.models import Thought
 from payments.models import Payment
@@ -38,7 +38,7 @@ class ViewsTest(TestCase):
 
     self.index_response = self.client.get(reverse(INDEX_VIEW))
 
-    self.test_user = User.objects.create_user(username='malcolm', email='malcolm@newsome.com', password='password')
+    self.test_user = create_user()
     create_locked_thoughts(10, self.test_user)
 
     self.index_post_request = create_index_post_request(self.test_user)
