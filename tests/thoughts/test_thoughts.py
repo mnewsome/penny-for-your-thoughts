@@ -1,13 +1,13 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
 
-from tests.thoughts.thought_helpers import *
+from tests.test_helpers import create_user
+from tests.thoughts.thought_helpers import create_locked_thoughts, create_unlocked_thoughts
 from thoughts.models import Thought
 from penny_for_your_thoughts import views
 
 class ThoughtTestCase(TestCase):
   def setUp(self):
-    self.test_user = User.objects.create_user('malcolm', 'malcolm@something.com', 'password')
+    self.test_user = create_user()
     create_locked_thoughts(2, self.test_user)
     create_unlocked_thoughts(1, self.test_user)
 
