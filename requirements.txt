@@ -14,6 +14,8 @@ kombu==3.0.24
 psycopg2==2.5.4
 pytz==2014.10
 redis==2.10.3
+requests==0.13.2
 six==1.8.0
 static3==0.5.1
+stripe==1.19.1
 wsgiref==0.1.2
