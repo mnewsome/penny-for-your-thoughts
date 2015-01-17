@@ -1,17 +1,18 @@
 import os
-from os import environ as env
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+ENV = os.environ
 
-SECRET_KEY = env.get('SECRET_KEY')
+SECRET_KEY = ENV.get('SECRET_KEY')
 
-DEBUG = True if env.get('DEBUG') == 'True' else False
+DEBUG = True if ENV.get('DEBUG') == 'True' else False
 
-STRIPE_SECRET_KEY = env.get('STRIPE_TEST_SECRET_KEY') if DEBUG == True else env.get('STRIPE_LIVE_SECRET_KEY')
-STRIPE_PUBLISHABLE_KEY = env.get('STRIPE_TEST_PUBLISHABLE_KEY') if DEBUG == True else env.get('STRIPE_LIVE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = ENV.get('STRIPE_TEST_SECRET_KEY') if DEBUG == True else ENV.get('STRIPE_LIVE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = ENV.get('STRIPE_TEST_PUBLISHABLE_KEY') if DEBUG == True else ENV.get('STRIPE_LIVE_PUBLISHABLE_KEY')
 
-REDIS_HOST = env.get('REDIS_DEV_HOST') if DEBUG == True else env.get('REDIS_PROD_HOST')
-REDIS_PORT = env.get('REDIS_DEV_PORT') if DEBUG == True else env.get('REDIS_PROD_PORT')
-REDIS_DB   = env.get('REDIS_DEV_DB') if DEBUG == True else env.get('REDIS_PROD_DB')
+REDIS_HOST = ENV.get('REDIS_DEV_HOST') if DEBUG == True else ENV.get('REDIS_PROD_HOST')
+REDIS_PORT = ENV.get('REDIS_DEV_PORT') if DEBUG == True else ENV.get('REDIS_PROD_PORT')
+REDIS_DB   = ENV.get('REDIS_DEV_DB') if DEBUG == True else ENV.get('REDIS_PROD_DB')
 
 TEMPLATE_DEBUG = True
 
