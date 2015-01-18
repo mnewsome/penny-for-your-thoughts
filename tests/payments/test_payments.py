@@ -12,4 +12,4 @@ class TestPayments(TestCase):
     Payment.objects.create(user=test_user, stripe_customer_id="some id", amount=500)
 
   def test_retrieve_total_of_all_payments(self):
-    self.assertEqual(2500, Payment.total_amount_donated())
+    self.assertEqual(25, Payment.total_dollars_donated())

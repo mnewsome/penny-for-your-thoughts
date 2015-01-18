@@ -12,5 +12,6 @@ class Payment(models.Model):
     return 'Payment from {0}'.format(str(self.user))
 
   @classmethod
-  def total_amount_donated(cls):
-    return Payment.objects.aggregate(models.Sum('amount'))['amount__sum']
+  def total_dollars_donated(cls):
+    amount_in_cents = Payment.objects.aggregate(models.Sum('amount'))['amount__sum']
+    return amount_in_cents / 100 if amount_in_cents is not None else 0

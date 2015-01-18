@@ -25,6 +25,7 @@ def index(request):
            unlocked_thought_count=Thought.unlocked_thought_count(),
            next_locked_thought=Thought.next_locked_thought(),
            thought_form=thought_form,
+           donation_total_dollars=Payment.total_dollars_donated(),
            key=stripe_keys['publishable_key'],
            )
 
