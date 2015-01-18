@@ -1,7 +1,10 @@
 {% load thought_tags %}
+{% load payment_tags %}
 
 <p>{{ locked_thought_count }} thoughts are  waiting to be unlocked. </p>
 <p>{{ unlocked_thought_count }} thoughts have been unlocked. </p>
+<p>{{ total_dollars_donated|currency }} donated. </p>
+
 
 <p>Preview of next thought: </p>
 <p>{{ next_locked_thought.text|truncatechars:30 }} </p>

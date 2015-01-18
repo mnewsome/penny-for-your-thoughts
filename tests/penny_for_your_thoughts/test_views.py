@@ -60,7 +60,7 @@ class ViewsTest(TestCase):
     self.assertTrue('unlocked_thought_count' in self.index_response.context)
     self.assertTrue('next_locked_thought' in self.index_response.context)
     self.assertTrue('thought_form' in self.index_response.context)
-    self.assertTrue('donation_total_dollars' in self.index_response.context)
+    self.assertTrue('total_dollars_donated' in self.index_response.context)
     self.assertTrue('key' in self.index_response.context)
 
   def test_index_view_template(self):
