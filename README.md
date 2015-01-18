@@ -7,9 +7,9 @@ A web application/fundraiser for help support Alzheimer's Diesease research and 
 ###Prepare
 
 You will need the following installed:
-  +[pip](https://pypi.python.org/pypi/pip)
-  +[virtualenv](https://virtualenv.pypa.io/en/latest/)
-  +[autoenv](https://github.com/kennethreitz/autoenv)
+  -[pip](https://pypi.python.org/pypi/pip)
+  -[virtualenv](https://virtualenv.pypa.io/en/latest/)
+  -[autoenv](https://github.com/kennethreitz/autoenv)
 
   I also highly recommend [virtualenvwrapper](https://virtualenvwrapper.readthedocs.org/en/latest/) for automatically activating your Virtualenv. However, this is not needed.
 
