@@ -37,12 +37,19 @@ class ThoughtTestCase(TestCase):
     thought.save(unlocked_pool_size)
     self.assertFalse(thought.is_locked)
 
-  def test_thought_worker_unlocks_all_available_thoughts(self):
+  def test_unlocks_all_available_thoughts(self):
     unlocked_pool_size = 10
     Thought.unlock_thoughts(unlocked_pool_size)
     self.assertEqual(Thought.unlocked_thought_count(), 3)
 
-  def test_thought_worker_unlocks_thoughts_based_on_pool_size(self):
+  def test_unlocks_thoughts_based_on_pool_size(self):
     unlocked_pool_size = 1
     Thought.unlock_thoughts(unlocked_pool_size)
     self.assertEqual(Thought.unlocked_thought_count(), 2)
+
+  def test_no_thoughts_were_unlocked(self):
+    locked_thoughts = Thought.objects.filter(is_locked=True)
+    Thought.objects.filter(pk__in=locked_thoughts).update(is_locked=False)
+
+    unlocked_pool_size = 10
+    self.assertEqual(0, Thought.unlock_thoughts(unlocked_pool_size))

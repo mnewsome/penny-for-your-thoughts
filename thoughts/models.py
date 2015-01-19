@@ -28,7 +28,7 @@ class Thought(models.Model):
     if Thought.locked_thought_count() > 0:
       thought_keys = Thought.objects.filter(is_locked=True).order_by('date_created').values('pk')[:unlocked_pool_size]
       return Thought.objects.filter(pk__in=thought_keys).update(is_locked=False)
-    return None
+    return 0
 
   @classmethod
   def ready_to_unlock(cls, pool_size):
