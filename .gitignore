@@ -4,3 +4,4 @@ venv
 staticfiles
 *.swp
 *.swo
+tags
