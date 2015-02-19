@@ -9,7 +9,7 @@ class Payment(models.Model):
   date_updated = models.DateTimeField(auto_now=True)
 
   def __unicode__(self):
-    return 'Payment from {0}'.format(str(self.user))
+    return 'Payment ID:{}  Amount: {}  By: {}'.format(self.pk, self.amount, self.user)
 
   @classmethod
   def total_dollars_donated(cls):
