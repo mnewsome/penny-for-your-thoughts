@@ -8,5 +8,14 @@ class ThoughtAssignment(models.Model):
   thought = models.ForeignKey(Thought, unique=True)
 
   def __unicode__(self):
-    return "Unlocked thought id: {0} by {1}".format(self.thought.pk,
-                                                    self.payments.all())
+    try:
+      payment_pk = self.payments.all().first().pk
+    except AttributeError:
+      payment_pk = "No Payment Assigned"
+
+    return "Unlocked thought id: {0} by Payment id: {1}".format(self.thought.pk,
+                                                   payment_pk)
+
+  @classmethod
+  def number_thoughts_assigned_to_payment(cls, payment_pk):
+    return ThoughtAssignment.objects.filter(payments__pk=payment_pk).count()
