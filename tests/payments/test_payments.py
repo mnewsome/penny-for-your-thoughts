@@ -1,8 +1,8 @@
 from django.test import TestCase
 
 from payments.models import Payment
-from tests.test_helpers import create_user
-from tests.payments.payment_helpers import create_payment
+from tests.helpers.user_helper import create_user
+from tests.helpers.payment_helper import create_payment
 
 class TestPayments(TestCase):
   def setUp(self):

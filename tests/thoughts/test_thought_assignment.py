@@ -1,8 +1,8 @@
 from django.test import TestCase
 
-from tests.test_helpers import create_user
-from tests.thoughts.thought_helpers import create_locked_thoughts
-from tests.payments.payment_helpers import create_payment
+from tests.helpers.user_helper import create_user
+from tests.helpers.thought_helper import create_locked_thoughts
+from tests.helpers.payment_helper import create_payment
 from thoughts.models import Thought, ThoughtAssignment
 from payments.models import Payment
 

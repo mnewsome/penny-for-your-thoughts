@@ -3,8 +3,8 @@ from django.core.urlresolvers import reverse
 
 from lib.payment_manager import PaymentManager
 from nosql_backend import RedisWrapper
-from tests.test_helpers import create_user
-from tests.thoughts.thought_helpers import *
+from tests.helpers.user_helper import create_user
+from tests.helpers.thought_helper import create_locked_thoughts, create_unlocked_thoughts
 from thoughts.models import Thought
 from payments.models import Payment
 import penny_for_your_thoughts.views as view
