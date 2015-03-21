@@ -14,7 +14,7 @@ class ThoughtAssignment(models.Model):
       payment_pk = "No Payment Assigned"
 
     return "Unlocked thought id: {0} by Payment id: {1}".format(self.thought.pk,
-                                                   payment_pk)
+                                                                payment_pk)
 
   @classmethod
   def number_thoughts_assigned_to_payment(cls, payment_pk):
