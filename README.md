@@ -19,11 +19,12 @@ You will need the following installed:
 
   `git clone git@github.com:mnewsome/penny-for-your-thoughts.git`
 
-2. cd into the project
+2. `cd` into the project
 
 3. Create a .env file
 
     You can use the [.env.example](https://github.com/mnewsome/penny-for-your-thoughts/blob/master/.env.example) file to get started.
+
     **Make sure to remove the .example extension so that your .env file is not committed.**
 
 4. Install dependencies
