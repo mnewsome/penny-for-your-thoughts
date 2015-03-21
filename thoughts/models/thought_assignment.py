@@ -19,3 +19,11 @@ class ThoughtAssignment(models.Model):
   @classmethod
   def number_thoughts_assigned_to_payment(cls, payment_pk):
     return ThoughtAssignment.objects.filter(payments__pk=payment_pk).count()
+
+  @classmethod
+  def assign(cls, payment, thoughts):
+    assignments = [ThoughtAssignment(thought=thought) for thought in thoughts]
+    ThoughtAssignment.objects.bulk_create(assignments)
+    saved_assigments = ThoughtAssignment.objects.all()[:len(assignments)]
+    for assignment in saved_assigments:
+      assignment.payments.add(payment)
