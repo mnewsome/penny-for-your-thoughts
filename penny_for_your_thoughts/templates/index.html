@@ -22,24 +22,18 @@
 {% show_unlocked_thoughts %}
 
 <body>
-  <form action="{% url 'penny_for_your_thoughts.views.charge' %}" method="post">
-  {% csrf_token %}
-    <article>
-    <label>
-      <span>Donate to unlock thoughts</span>
-    </label>
-    </article>
-
-    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-      data-key="{{ key }}"
-      data-description="Donation"
-      data-amount="500"></script>
-  </form>
 
   <form action="{% url 'penny_for_your_thoughts.views.charge' %}" method="post" id="payment-form">
     {% csrf_token %}
 
     <span class="payment-errors"></span>
+
+    <div class="form-row">
+      <label>
+        <span>Amount</span>
+        <input type="text" size="10" name="amount"/>
+      </label>
+    </div>
 
     <div class="form-row">
       <label>
@@ -64,9 +58,17 @@
       <input type="text" size="4" data-stripe="exp-year"/>
     </div>
 
+    <div class="form-row">
+      <label>
+        <span>Email</span>
+        <input type="text" size="50" name="email"/>
+      </label>
+    </div>
+
     <button type="submit">Submit Payment</button>
   </form>
 
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script type="text/javascript">
     Stripe.setPublishableKey('{{ key }}');
@@ -80,14 +82,12 @@
       } else {
         var token = response.id;
         $form.append($('<input type="hidden" name="stripeToken" />').val(token));
-        $form.append($('<input type="hidden" name="stripeEmail" />').val(token));
         $form.get(0).submit();
       }
     };
 
   jQuery(function($) {
     $('#payment-form').submit(function(e) {
-      alert("hello")
       var $form = $(this);
       $form.find('button').prop('disabled', true);
       Stripe.card.createToken($form, stripeResponseHandler);
@@ -95,5 +95,4 @@
       });
     });
   </script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </body>

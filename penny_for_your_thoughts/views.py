@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
+from lib import payment_manager
 
 from lib.payment_manager import stripe_keys, PaymentManager
 from nosql_backend import RedisWrapper
@@ -35,11 +36,12 @@ def index(request):
 @require_POST
 def charge(request):
   if request.method == 'POST':
-    amount = 500
+    amount = int(request.POST['amount'])
+    email = request.POST['email']
+    token = request.POST['stripeToken']
 
     payment_manager = get_payment_manager()
-    customer = payment_manager.create_customer(request.POST['stripeEmail'],
-                                               request.POST['stripeToken'])
+    customer = payment_manager.create_customer(email, token)
     payment_manager.create_charge(customer, amount)
 
     Payment(user=request.user, stripe_customer_id=customer.id, amount=amount).save()
