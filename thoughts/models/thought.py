@@ -9,7 +9,16 @@ class Thought(models.Model):
   user = models.ForeignKey(User)
 
   def __unicode__(self):
-    return self.text
+    return """Thought ID: {0}
+              Created: {1}
+              Updated: {2}
+              Locked?: {3}
+              created by user: {4}""".format(self.pk,
+                                             self.date_created,
+                                             self.date_updated,
+                                             self.is_locked,
+                                             self.user
+                                            )
 
   @classmethod
   def locked_thought_count(cls):
