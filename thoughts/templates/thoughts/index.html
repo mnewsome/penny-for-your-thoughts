@@ -1,7 +1,7 @@
 {% if thoughts %}
 <ul>
   {% for thought in thoughts %}
-  <li><a href="/thoughts/{{ thought.id }}/">{{ thought.text }}</a></li>
+  <li><a href="{% url 'thoughts.views.show' thought.id %}">{{ thought.text }}</a></li>
   {% endfor %}
 </ul>
 {% else %}
