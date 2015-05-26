@@ -26,7 +26,7 @@ class MockCustomer:
 def create_charge_post_request():
     view.get_payment_manager = PaymentManagerSpy
     return factory.post(reverse(CHARGE_VIEW),
-                               {'stripeEmail': 'some@email.com', 'stripeToken':'someToken'})
+                               {'amount': '500', 'email': 'some@email.com', 'stripeToken':'someToken'})
 
 def create_index_post_request(user):
   return factory.post(reverse(INDEX_VIEW),
