@@ -12,6 +12,29 @@
         <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     </head>
 
+    <header>
+        {% if user.is_authenticated %}
+            <span>Hello, {{ user.username }}</span>
+            <br>
+            <span><a href="{% url 'penny_for_your_thoughts.views.logout_user' %}">logout</a></span>
+
+        {% else %}
+            <form method="post" action="{% url 'penny_for_your_thoughts.views.login_user' %}">
+                {% csrf_token %}
+                {{ auth_form }}
+                <input type='submit' value="login">
+            </form>
+        {% endif %}
+
+        {% if messages %}
+            <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+            </ul>
+        {% endif %}
+    </header>
+
     <body>
         {% block content %} {% endblock content %}
     </body>
