@@ -1,27 +1,29 @@
+{% extends 'base.html' %}
+
 {% load thought_tags %}
 {% load payment_tags %}
 
-<p>{{ locked_thought_count }} thoughts are  waiting to be unlocked. </p>
-<p>{{ unlocked_thought_count }} thoughts have been unlocked. </p>
-<p>{{ total_dollars_donated|currency }} donated. </p>
+
+{% block content %}
+  <p>{{ locked_thought_count }} thoughts are  waiting to be unlocked. </p>
+  <p>{{ unlocked_thought_count }} thoughts have been unlocked. </p>
+  <p>{{ total_dollars_donated|currency }} donated. </p>
 
 
-<p>Preview of next thought: </p>
-<p>{{ next_locked_thought.text|truncatechars:30 }} </p>
+  <p>Preview of next thought: </p>
+  <p>{{ next_locked_thought.text|truncatechars:30 }} </p>
 
-<p>Enter a thought: </p>
+  <p>Enter a thought: </p>
 
-<form method=post action="{% url 'penny_for_your_thoughts.views.index' %}" >
-  {% csrf_token %}
-  {{ thought_form.text }}
-  {{ thought_form.user.as_hidden }}
-  <input type="submit" value="submit">
-</form>
+  <form method=post action="{% url 'penny_for_your_thoughts.views.index' %}" >
+    {% csrf_token %}
+    {{ thought_form.text }}
+    {{ thought_form.user.as_hidden }}
+    <input type="submit" value="submit">
+  </form>
 
-<h3>Unlocked Thoughts</h3>
-{% show_unlocked_thoughts %}
-
-<body>
+  <h3>Unlocked Thoughts</h3>
+  {% show_unlocked_thoughts %}
 
   <form action="{% url 'penny_for_your_thoughts.views.charge' %}" method="post" id="payment-form">
     {% csrf_token %}
@@ -104,4 +106,4 @@
       });
     });
   </script>
-</body>
+{% endblock %}
