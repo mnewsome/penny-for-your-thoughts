@@ -24,9 +24,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'thoughts',
-    'payments',
     'accounts',
+    'payments',
+    'thoughts',
 )
 
 MIDDLEWARE_CLASSES = (
