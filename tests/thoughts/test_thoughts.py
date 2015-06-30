@@ -3,7 +3,6 @@ from django.test import TestCase
 from tests.helpers.user_helper import create_user
 from tests.helpers.thought_helper import create_locked_thoughts, create_unlocked_thoughts
 from thoughts.models import Thought
-from penny_for_your_thoughts import views
 
 class ThoughtTestCase(TestCase):
   def setUp(self):
