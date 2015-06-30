@@ -1,7 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.test              import TestCase, Client, RequestFactory
 
-
 import accounts.views as view
 from tests.helpers.user_helper import create_general_user
 from tests.helpers.payment_helper import create_payment
