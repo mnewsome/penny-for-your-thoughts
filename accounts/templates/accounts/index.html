@@ -8,18 +8,14 @@
 
         <ul>
             {% for thought in thoughts %}
-
             <li>
                 {{ thought.text }}
                 <br>
                 {{ thought.date_created }}
                 <br>
                 Locked? {{ thought.is_locked }}
-
             </li>
-
             {% endfor %}
-
         </ul>
 
 {% endblock %}
