@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.db.models           import Sum
 
-from payments.models    import Payment
-from thoughts.models    import Thought
+from payments.models     import Payment
+from thoughts.repository import get_thoughts
 
 class Interactor():
 	def __init__(self, request):
@@ -10,7 +10,7 @@ class Interactor():
 
 	def presenter(self):
 		user = User.objects.get(username=self.request.user.username)
-		thoughts = Thought.objects.filter(user=user)
+		thoughts = get_thoughts(user=user)
 
 		context = dict(
 			general_user    = user.generaluser,
