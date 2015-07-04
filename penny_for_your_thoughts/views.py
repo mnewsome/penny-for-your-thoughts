@@ -4,12 +4,11 @@ from django.contrib.auth.forms    import AuthenticationForm
 from django.shortcuts             import render, redirect
 from django.views.decorators.http import require_POST, require_GET
 
-from lib.payment_manager          import stripe_keys, PaymentManager
-from nosql_backend                import RedisWrapper
-from thoughts.forms               import ThoughtForm
-from thoughts.models              import Thought
-from payments.models              import Payment
-
+from lib.payment_manager import stripe_keys, PaymentManager
+from nosql_backend       import RedisWrapper
+from thoughts.forms      import ThoughtForm
+from thoughts.models     import Thought
+from payments            import repository as payment_repository
 
 redis_store = RedisWrapper()
 
@@ -55,7 +54,7 @@ def index(request):
             unlocked_thought_count = Thought.unlocked_thought_count(),
             next_locked_thought    = Thought.next_locked_thought(),
             thought_form           = thought_form,
-            total_dollars_donated  = Payment.total_dollars_donated(),
+            total_dollars_donated  = payment_repository.total_dollars_donated(),
             key                    = stripe_keys['publishable_key'],
             )
 
@@ -73,7 +72,7 @@ def charge(request):
         customer = payment_manager.create_customer(email, token)
         payment_manager.create_charge(customer, amount)
 
-        Payment(user=request.user, stripe_customer_id=customer.id, amount=amount).save()
+        payment_repository.save(request.user, customer.id, amount)
         updated_thought_count = Thought.unlock_thoughts(amount)
         adjust_thought_pool(updated_thought_count, amount)
 
