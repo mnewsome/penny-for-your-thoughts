@@ -3,9 +3,12 @@ from django.test              import TestCase, RequestFactory
 
 from accounts.interactor          import Interactor
 from tests.helpers.user_helper    import create_general_user
-from tests.helpers.payment_helper import create_payment
 
 ACCOUNT_VIEW = 'accounts.views.index'
+
+class InteractorSpy(Interactor):
+	def _donation_amount(self, user):
+		return 500
 
 class InteractorTest(TestCase):
 	def setUp(self):
@@ -15,9 +18,8 @@ class InteractorTest(TestCase):
 		self.request.user = self.test_user
 
 	def test_presenter(self):
-		interactor = Interactor(self.request)
-		create_payment(self.test_user, 500)
+		interactor_spy = InteractorSpy(self.request)
 
-		self.assertTrue('general_user' in interactor.presenter())
-		self.assertTrue('thoughts' in interactor.presenter())
-		self.assertTrue('donation_amount' in interactor.presenter())
+		self.assertTrue('general_user' in interactor_spy.presenter())
+		self.assertTrue('thoughts' in interactor_spy.presenter())
+		self.assertTrue('donation_amount' in interactor_spy.presenter())
