@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST, require_GET
 from lib.payment_manager import stripe_keys, PaymentManager
 from nosql_backend       import RedisWrapper
 from thoughts.forms      import ThoughtForm
-from thoughts.models     import Thought
+from thoughts            import repository as thought_repository
 from payments            import repository as payment_repository
 
 redis_store = RedisWrapper()
@@ -50,15 +50,15 @@ def index(request):
 
     context = dict(
             auth_form              = auth_form,
-            locked_thought_count   = Thought.locked_thought_count(),
-            unlocked_thought_count = Thought.unlocked_thought_count(),
-            next_locked_thought    = Thought.next_locked_thought(),
+            locked_thought_count   = thought_repository.locked_thought_count(),
+            unlocked_thought_count = thought_repository.unlocked_thought_count(),
+            next_locked_thought    = thought_repository.next_locked_thought(),
             thought_form           = thought_form,
             total_dollars_donated  = payment_repository.total_dollars_donated(),
             key                    = stripe_keys['publishable_key'],
             )
 
-    Thought.unlock_thoughts(redis_store.unlocked_thought_pool_value())
+    thought_repository.unlock_thoughts(redis_store.unlocked_thought_pool_value())
     return render(request, 'index.html', context)
 
 @require_POST
@@ -73,13 +73,13 @@ def charge(request):
         payment_manager.create_charge(customer, amount)
 
         payment_repository.save(request.user, customer.id, amount)
-        updated_thought_count = Thought.unlock_thoughts(amount)
+        updated_thought_count = thought_repository.unlock_thoughts(amount)
         adjust_thought_pool(updated_thought_count, amount)
 
     return redirect('penny_for_your_thoughts.views.index')
 
 def unlock_thoughts():
-    Thought.unlock_thoughts()
+    thought_repository.unlock_thoughts()
 
 def get_payment_manager():
     return PaymentManager()

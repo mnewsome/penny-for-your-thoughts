@@ -5,7 +5,7 @@ from lib.payment_manager          import PaymentManager
 from nosql_backend                import RedisWrapper
 from tests.helpers.user_helper    import create_user
 from tests.helpers.thought_helper import create_locked_thoughts
-from thoughts.models              import Thought
+from thoughts                     import repository as thought_repository
 from payments.models              import Payment
 import penny_for_your_thoughts.views as view
 
@@ -67,7 +67,7 @@ class ViewsTest(TestCase):
 
     def test_charge_view_unlocks_thoughts(self):
         view.charge(self.charge_post_request)
-        self.assertEqual(10, Thought.unlocked_thought_count())
+        self.assertEqual(10, thought_repository.unlocked_thought_count())
 
     def test_charge_view_increments_thought_pool(self):
         view.charge(self.charge_post_request)
@@ -96,7 +96,7 @@ class ViewsTest(TestCase):
     def test_index_view_unlocks_thoughts_when_there_is_room_in_the_pool(self):
         self.redis_store.increment_unlocked_thought_pool(15)
         view.index(self.index_post_request)
-        self.assertEqual(0, Thought.locked_thought_count())
+        self.assertEqual(0, thought_repository.locked_thought_count())
 
     def test_login(self):
         response = self.client.post(reverse(LOGIN_VIEW), {'username': self.test_user.username, 'password': self.test_user.password})
