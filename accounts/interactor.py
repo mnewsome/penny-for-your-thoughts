@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
-from django.db.models           import Sum
 
-from payments.models import Payment
-from thoughts        import repository
+from payments        import repository as payment_repository
+from thoughts        import repository as thought_repository
 
 class Interactor():
 	def __init__(self, request):
@@ -20,8 +19,7 @@ class Interactor():
 		return context
 
 	def _get_thoughts(self, user):
-		return repository.get_thoughts(user=user)
+		return thought_repository.get_thoughts(user=user)
 
 	def _donation_amount(self, user):
-		payments = Payment.objects.filter(user=user).aggregate(Sum('amount'))
-		return int(payments['amount__sum'] * .01)
+		return payment_repository.donation_amount_by_user(user)
