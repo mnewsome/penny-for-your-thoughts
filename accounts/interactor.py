@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 
-from payments        import repository as payment_repository
-from thoughts        import repository as thought_repository
+from payments import repository as payment_repository
+from thoughts import repository as thought_repository
 
 class Interactor():
 	def __init__(self, request):
