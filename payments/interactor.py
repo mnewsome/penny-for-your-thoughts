@@ -5,7 +5,6 @@ from thoughts            import repository as thought_repository
 redis_store = RedisWrapper()
 
 class Interactor():
-
 	def __init__(self, payment_manager):
 		self.payment_manager = payment_manager
 
