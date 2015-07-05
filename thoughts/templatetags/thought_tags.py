@@ -1,10 +1,9 @@
 from django import template
 
-from thoughts.models import Thought
+from thoughts import repository as thought_repository
 
 register = template.Library()
 
 @register.inclusion_tag('thoughts/index.html')
 def show_unlocked_thoughts():
-  thoughts = Thought.objects.filter(is_locked=False).order_by('-date_created')
-  return {'thoughts': thoughts}
+  return {'thoughts': thought_repository.get_thoughts(is_locked=False)}
