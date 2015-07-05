@@ -6,7 +6,7 @@ from penny_for_your_thoughts import views
 
 urlpatterns = patterns('',
     url(r'^$', views.index),
-    url(r'^charge/', views.charge),
+    url(r'^charge/', include('payments.urls')),
 
     url('', include('django.contrib.auth.urls')),
     url(r'^account/', include('accounts.urls')),
