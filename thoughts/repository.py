@@ -2,8 +2,8 @@ from thoughts.models import Thought
 
 def get_thoughts(limit=None, **filters):
 	if limit:
-		return Thought.objects.filter(**filters)[:limit]
-	return Thought.objects.filter(**filters)
+		return Thought.objects.filter(**filters).order_by('-date_created')[:limit]
+	return Thought.objects.filter(**filters).order_by('-date_created')
 
 def locked_thought_count():
 	return Thought.objects.filter(is_locked=True).count()
