@@ -24,8 +24,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'thoughts',
+    'accounts',
     'payments',
+    'thoughts',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -71,6 +72,9 @@ ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = (
         os.path.join(BASE_DIR, 'static'),

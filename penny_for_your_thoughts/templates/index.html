@@ -25,7 +25,7 @@
   <h3>Unlocked Thoughts</h3>
   {% show_unlocked_thoughts %}
 
-  <form action="{% url 'penny_for_your_thoughts.views.charge' %}" method="post" id="payment-form">
+  <form action="{% url 'payments.views.charge' %}" method="post" id="payment-form">
     {% csrf_token %}
 
     <span class="payment-errors"></span>

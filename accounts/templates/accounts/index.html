@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <img src="{% get_media_prefix %}{{ general_user.profile_picture }}" />
+
+    <h3>Donations</h3>
+
+        Total:
+        ${{ donation_amount }}
+
+    <h3>My Thoughts</h3>
+
+        <ul>
+            {% for thought in thoughts %}
+            <li>
+                {{ thought.text }}
+                <br>
+                {{ thought.date_created }}
+                <br>
+                Locked? {{ thought.is_locked }}
+            </li>
+            {% endfor %}
+        </ul>
+
+
+{% endblock %}
+

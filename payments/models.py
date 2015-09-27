@@ -10,8 +10,3 @@ class Payment(models.Model):
 
   def __unicode__(self):
     return 'Payment ID:{}  Amount: {}  By: {}'.format(self.pk, self.amount, self.user)
-
-  @classmethod
-  def total_dollars_donated(cls):
-    amount_in_cents = Payment.objects.aggregate(models.Sum('amount'))['amount__sum']
-    return amount_in_cents / 100 if amount_in_cents is not None else 0

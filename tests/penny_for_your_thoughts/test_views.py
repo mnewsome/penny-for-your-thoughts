@@ -1,34 +1,17 @@
 from django.test                  import TestCase, Client, RequestFactory
 from django.core.urlresolvers     import reverse
 
-from lib.payment_manager          import PaymentManager
 from nosql_backend                import RedisWrapper
 from tests.helpers.user_helper    import create_user
 from tests.helpers.thought_helper import create_locked_thoughts
-from thoughts.models              import Thought
-from payments.models              import Payment
+from thoughts                     import repository as thought_repository
 import penny_for_your_thoughts.views as view
 
-CHARGE_VIEW = 'penny_for_your_thoughts.views.charge'
+factory = RequestFactory()
+
 INDEX_VIEW = 'penny_for_your_thoughts.views.index'
 LOGIN_VIEW = 'penny_for_your_thoughts.views.login_user'
 LOGOUT_VIEW = 'penny_for_your_thoughts.views.logout_user'
-factory = RequestFactory()
-
-class PaymentManagerSpy(PaymentManager):
-  def create_customer(self, email, card):
-    return MockCustomer()
-
-  def create_charge(self, customer, card):
-    return None
-
-class MockCustomer:
-    id = "cust_id"
-
-def create_charge_post_request():
-    view.get_payment_manager = PaymentManagerSpy
-    return factory.post(reverse(CHARGE_VIEW),
-                               {'amount': '500', 'email': 'some@email.com', 'stripeToken':'someToken'})
 
 def create_index_post_request(user):
   return factory.post(reverse(INDEX_VIEW),
@@ -48,30 +31,11 @@ class ViewsTest(TestCase):
 
         self.index_post_request = create_index_post_request(self.test_user)
 
-        self.charge_post_request = create_charge_post_request()
-        self.charge_post_request.user = self.test_user
-
         self.redis_store = RedisWrapper(db=1)
         view.redis_store = self.redis_store
 
     def tearDown(self):
         self.redis_store.reset_unlocked_thought_pool()
-
-    def test_charge_view_response(self):
-        response = self.client.get(reverse(CHARGE_VIEW))
-        self.assertEqual(response.status_code, 405)
-
-    def test_charge_view_saves_payment(self):
-        view.charge(self.charge_post_request)
-        self.assertEqual(1, Payment.objects.count())
-
-    def test_charge_view_unlocks_thoughts(self):
-        view.charge(self.charge_post_request)
-        self.assertEqual(10, Thought.unlocked_thought_count())
-
-    def test_charge_view_increments_thought_pool(self):
-        view.charge(self.charge_post_request)
-        self.assertEqual(490, self.redis_store.unlocked_thought_pool_value())
 
     def test_index_view_get_request(self):
         self.assertEqual(self.index_response.status_code, 200)
@@ -96,7 +60,7 @@ class ViewsTest(TestCase):
     def test_index_view_unlocks_thoughts_when_there_is_room_in_the_pool(self):
         self.redis_store.increment_unlocked_thought_pool(15)
         view.index(self.index_post_request)
-        self.assertEqual(0, Thought.locked_thought_count())
+        self.assertEqual(0, thought_repository.locked_thought_count())
 
     def test_login(self):
         response = self.client.post(reverse(LOGIN_VIEW), {'username': self.test_user.username, 'password': self.test_user.password})
